@@ -10,6 +10,9 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
+#DS Store
+.DS_Store
+
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
