@@ -13,14 +13,19 @@ public class ManageSlider : MonoBehaviour
     [SerializeField]
     RangeVariable _sliderValue;
 
+    [SerializeField]
+    RangeDoubleVariable _sliderDoubleValue;
+
     private TextMeshProUGUI _valueFieldText;
 
     private void Awake()
     {
-        Debug.Log(name);
-
+        Debug.Log($"{name}");
+        Debug.Log($"{_sliderDoubleValue}");
         _valueFieldText = _slider.transform.parent.Find("ValueField").GetComponent<TextMeshProUGUI>();
-        _slider.value = _sliderValue.Value;
+        _slider.value = (float) ((_sliderDoubleValue != null) ? _sliderDoubleValue.Value : _sliderValue.Value);
+        _slider.value = Mathf.Round(_slider.value * 4) / 4;
+
 
         ValueChangeCheck();
 
@@ -40,8 +45,19 @@ public class ManageSlider : MonoBehaviour
 
     void ValueChangeCheck()
     {
-        _sliderValue.Value = (int)_slider.value;
-        _valueFieldText.SetText($"{_slider.value}");
+        if(_sliderDoubleValue)
+        {
+            _slider.value = Mathf.Round(_slider.value * 4) / 4;
+            _sliderDoubleValue.Value = _slider.value;
+            _valueFieldText.SetText($"{_slider.value}s");
+        }
+        else
+        {
+            _sliderValue.Value = (int)_slider.value;
+            _valueFieldText.SetText($"{_slider.value}");
+        }
+        
+        
     }
 
 

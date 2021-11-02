@@ -17,7 +17,7 @@ public class CellGrid : MonoBehaviour
     private GameObject _cellPrefab;
 
     [SerializeField]
-    private float _simulationInterval = 1;
+    RangeDoubleVariable _simulationInterval;
 
     [SerializeField]
     private Button _btnTogglePlay;
@@ -42,8 +42,6 @@ public class CellGrid : MonoBehaviour
 
     private void Awake()
     {
-
-
 
     }
     void Start()
@@ -80,8 +78,7 @@ public class CellGrid : MonoBehaviour
         EmptyGrid();
 
         SetCamera();
-
-
+        
         loops = 0;
 
 
@@ -90,12 +87,14 @@ public class CellGrid : MonoBehaviour
 
     public void EmptyGrid()
     {
-        Debug.Log(go_Grid);
+        //If the grid exists and has children
 
         if(go_Grid != null && go_Grid.transform.childCount > 0)
         {
+            //reset the grid to the center of the scene
             go_Grid.transform.position = Vector2.zero;
 
+            //and destroy all its children
             foreach (Transform child in go_Grid.transform)
             {
                 GameObject.Destroy(child.gameObject);
@@ -119,7 +118,7 @@ public class CellGrid : MonoBehaviour
 
             LoopThroughEachCell("setCellState");
 
-            _nextSimTime = Time.time + _simulationInterval;
+            _nextSimTime = Time.time + (float)_simulationInterval.Value;
         }
     }
 
@@ -250,6 +249,6 @@ public class CellGrid : MonoBehaviour
 
     private void SetCamera()
     {
-        _camera.orthographicSize = .7f * Mathf.Max(_rows.Value, _columns.Value / 16f / 9f);
+        _camera.orthographicSize = .7f * Mathf.Max(_rows.Value, _columns.Value);
     }
 }
